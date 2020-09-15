@@ -58,7 +58,12 @@ namespace GuessTheNumber.Controllers
         {
             try
             {
-                return Ok(await _numbersRepository.GetNumberDataRecordById(numberRecordId, cancellationToken));
+                var record = await _numbersRepository.GetNumberDataRecordById(numberRecordId, cancellationToken);
+                
+                if (record != null)
+                    return Ok(record);
+                
+                throw new ArgumentOutOfRangeException(nameof(numberRecordId), "NumberData record with provided Id wasn't fond in the DB");
             }
             catch (Exception e)
             {
